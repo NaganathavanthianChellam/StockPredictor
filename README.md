@@ -1,8 +1,19 @@
 # StockPredictor
 
-A 30-day bullish stock scanner that analyzes market tickers using technical analysis to identify promising breakout candidates.
+A professional stock analysis platform for Indian markets with advanced technical analysis, pattern detection, and AI-powered investment predictions.
 
-## Quick Start (After Python Installation)
+## ✨ Features
+
+- 🎯 **Smart Stock Analysis** — Multi-strategy scoring system (Minervini, Stine, Elder)
+- 📊 **Indian Market Focus** — 30+ pre-configured NSE/BSE stocks
+- 🔍 **Pattern Detection** — VCP, Flat Base, Darvas, Tight Flag patterns
+- 💰 **Investment Guidance** — Entry zones, stop loss, price targets with R:R ratios
+- 🎨 **Professional UI** — Modern React interface with real-time updates
+- 📈 **Technical Indicators** — SMA, EMA, MACD, ATR, RS Rank, RMV15
+- 📁 **Data Export** — Export analysis to CSV for further review
+- 🔔 **Signal System** — BUY/WATCH/AVOID recommendations
+
+## 🚀 Quick Start
 
 ### Windows (PowerShell)
 ```powershell
@@ -33,7 +44,18 @@ The API will be available at: **http://localhost:8000**
 
 If Python isn't installed, follow the [SETUP_GUIDE.md](SETUP_GUIDE.md) for detailed instructions.
 
-## Available Endpoints
+## 🌐 Accessing the Application
+
+### Backend API
+- **Base URL**: http://localhost:8000
+- **API Docs**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/health
+
+### Frontend UI
+- **Web Interface**: http://localhost:3000
+- **Modern React UI** with stock selector and analysis dashboard
+
+## 📡 API Endpoints
 
 - `GET /health` — Health check
 - `POST /scan` — Run a full universe scan
@@ -41,11 +63,28 @@ If Python isn't installed, follow the [SETUP_GUIDE.md](SETUP_GUIDE.md) for detai
 - `GET /docs` — Interactive API documentation (Swagger UI)
 - `GET /redoc` — ReDoc documentation
 
+## 🎨 Frontend Features
+
+### Professional UI Components
+- **Stock Selector** — Search, filter by sector, quick-add popular stocks
+- **Results Dashboard** — Sortable table with signals and metrics
+- **Detail Modal** — Comprehensive analysis with investment thesis
+- **Export** — Download results as CSV
+
+### Supported Stocks
+- Banking: HDFCBANK, ICICIBANK, KOTAKBANK, SBIN, AXISBANK
+- IT: TCS, INFY, WIPRO, HCLTECH, TECHM
+- FMCG: HINDUNILVR, ITC, NESTLEIND, BRITANNIA
+- Auto: MARUTI, M&M, TATAMOTORS, BAJAJ-AUTO
+- Pharma: SUNPHARMA, DRREDDY, CIPLA
+- Energy: RELIANCE, ONGC, NTPC, POWERGRID
+- And more...
+
 ## Project Structure
 
 ```
 StockPredictor/
-├── backend/              # FastAPI backend
+├── backend/              # FastAPI backend application
 │   ├── app/              # Application modules
 │   ├── run.py            # Entry point
 │   ├── run_dev.ps1       # Windows development runner
@@ -53,42 +92,67 @@ StockPredictor/
 │   ├── setup_venv.ps1    # Windows venv setup
 │   ├── setup_venv.sh     # Unix venv setup
 │   └── requirements.txt   # Python dependencies
-├── frontend/             # React frontend (coming soon)
+├── frontend/             # React + TypeScript frontend
+│   ├── src/              # Source code
+│   │   ├── components/   # React components
+│   │   ├── services/     # API client
+│   │   ├── store/        # State management
+│   │   ├── types/        # TypeScript types
+│   │   └── utils/        # Utilities
+│   ├── package.json      # Node dependencies
+│   └── vite.config.ts    # Vite configuration
 ├── .kiro/                # Kiro workspace config
 └── SETUP_GUIDE.md        # Detailed setup instructions
 ```
 
 ## Development
 
-### Manual Virtual Environment Setup
+### Backend Setup (Python)
 
 ```powershell
 # Windows
-python -m venv backend/venv
-.\backend\venv\Scripts\Activate.ps1
-pip install -r backend/requirements.txt
+cd backend
+.\venv\Scripts\Activate.ps1
+python run.py
 ```
 
 ```bash
 # macOS/Linux
-python3 -m venv backend/venv
-source backend/venv/bin/activate
-pip install -r backend/requirements.txt
+cd backend
+source venv/bin/activate
+python run.py
 ```
 
-### Run the Server
+Backend will run on `http://localhost:8000`
 
-```powershell
-# Windows
-.\backend\venv\Scripts\Activate.ps1
-python backend/run.py
-```
+### Frontend Setup (Node.js)
 
 ```bash
-# macOS/Linux
-source backend/venv/bin/activate
-python backend/run.py
+# Install dependencies (first time only)
+cd frontend
+npm install
+
+# Start development server
+npm run dev
 ```
+
+Frontend will run on `http://localhost:3000`
+
+### Both Services Running
+
+1. **Terminal 1**: Backend API (Python)
+   ```bash
+   cd backend
+   python run.py
+   ```
+
+2. **Terminal 2**: Frontend UI (Node.js)
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+
+3. **Open Browser**: http://localhost:3000
 
 ### Configuration
 

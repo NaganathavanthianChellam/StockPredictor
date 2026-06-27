@@ -21,16 +21,50 @@
 
 ## Build & Development Commands
 
-### Backend
+### Backend Setup (First Time)
+
+**Windows (PowerShell):**
+```powershell
+cd backend
+.\run_dev.ps1
+```
+
+**macOS/Linux (Bash):**
 ```bash
+cd backend
+chmod +x run_dev.sh
+./run_dev.sh
+```
+
+Or manually:
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate it
+# Windows: .\venv\Scripts\Activate.ps1
+# macOS/Linux: source venv/bin/activate
+
 # Install dependencies
-pip install -r backend/requirements.txt
+pip install -r requirements.txt
+```
 
-# Run development server
-python backend/run.py
+### Backend - Running the Server
+```bash
+# Activate venv first
+cd backend
+python run.py
 
-# Or with uvicorn directly
+# Or directly with uvicorn:
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### Backend - Code Quality (Unix/Make)
+```bash
+make help           # See all commands
+make lint           # Run flake8
+make format         # Run black
+make test           # Run pytest
 ```
 
 ### Frontend

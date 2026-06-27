@@ -1,0 +1,1 @@
+"""StockPredictor backend application."""

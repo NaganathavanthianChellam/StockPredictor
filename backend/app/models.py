@@ -6,6 +6,7 @@ from datetime import datetime
 
 class ScanRequest(BaseModel):
     """POST /scan request body."""
+    stocks: List[str] = Field(default_factory=list, description="List of stock symbols to analyze")
     as_of: Optional[str] = Field(None, description="YYYY-MM-DD, default: latest closed trading day")
     top_n: int = Field(20, ge=1, le=500)
     min_score: int = Field(65, ge=0, le=100)

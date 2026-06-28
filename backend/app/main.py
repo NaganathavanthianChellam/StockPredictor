@@ -62,24 +62,73 @@ async def scan(request: ScanRequest):
     Returns top candidates sorted by final score.
     """
     scan_id = request.request_id or str(uuid.uuid4())
-    logger.info(f"Scan requested: {scan_id}")
+    logger.info(f"Scan requested: {scan_id} with {len(request.stocks) if hasattr(request, 'stocks') else 0} stocks")
     
     try:
-        # TODO: Implement full scan pipeline
-        # 1. Fetch universe from Massive API
-        # 2. Apply liquidity filters
-        # 3. Fetch daily bars for each ticker
-        # 4. Calculate indicators
-        # 5. Apply hard filters
-        # 6. Calculate scores
-        # 7. Apply strategy confluence filters
-        # 8. Rank results
-        
         config = get_config()
         config_hash_val = config_hash(config)
         
-        # Placeholder response
-        logger.warning("Scan pipeline not yet implemented - returning empty results")
+        # Mock implementation with sample data for demo
+        # TODO: Implement full scan pipeline when pipeline.py and scoring.py are ready
+        
+        import random
+        from datetime import datetime
+        
+        # Get stocks from request or use defaults
+        stock_symbols = request.stocks if request.stocks else ['RELIANCE', 'TCS', 'HDFCBANK', 'INFY', 'ITC']
+        
+        mock_results = []
+        for symbol in stock_symbols[:10]:  # Limit to 10 for demo
+            # Generate mock data
+            base_price = random.uniform(500, 3000)
+            score = random.uniform(60, 95)
+            signal = 'BUY' if score >= 75 else 'WATCH' if score >= 60 else 'AVOID'
+            
+            entry_low = base_price * 0.98
+            entry_high = base_price * 1.02
+            stop = entry_low * 0.93
+            target1 = entry_high * 1.15
+            target2 = entry_high * 1.30
+            risk_pct = ((entry_low - stop) / entry_low) * 100
+            
+            result = CandidateResult(
+                symbol=symbol,
+                sector=random.choice(['IT', 'Banking', 'Energy', 'FMCG', 'Auto']),
+                signal=signal,
+                final_score=score,
+                composite_score=score * 0.9,
+                stage=2,
+                pattern=PatternDetail(
+                    name=random.choice(['VCP', 'Flat Base', 'Darvas', 'Tight Flag']),
+                    confirmed=True,
+                    confidence=random.uniform(0.7, 0.95),
+                    pivot=base_price * 1.05,
+                    base_height=base_price * 0.15
+                ) if random.random() > 0.3 else None,
+                strategies_passing=['minervini', 'stine'] if score >= 75 else ['minervini'],
+                minervini_pass_count=random.randint(6, 8),
+                rs_rank=random.uniform(70, 95),
+                rmv15=random.uniform(1.2, 2.5),
+                rvol_today=random.uniform(1.1, 2.8),
+                atr_14=base_price * 0.02,
+                extension_severity=random.randint(0, 2),
+                chasing=score < 70,
+                entry_zone=[entry_low, entry_high],
+                stop=stop,
+                risk_pct=risk_pct,
+                target_1=target1,
+                target_2=target2,
+                position_size_hint_pct_account=min(10.0, 100.0 / risk_pct),
+                thesis=f"Strong technical setup for {symbol} with good momentum and relative strength. "
+                       f"{'Confirmed pattern breakout with volume. ' if score >= 75 else 'Watch for entry signal. '}"
+                       f"Risk/reward ratio of 1:{((target1 - entry_low) / (entry_low - stop)):.1f}."
+            )
+            mock_results.append(result)
+        
+        # Sort by score
+        mock_results.sort(key=lambda x: x.final_score, reverse=True)
+        
+        logger.info(f"Scan complete: {len(mock_results)} results (MOCK DATA)")
         
         return ScanResponse(
             scan_id=scan_id,
@@ -87,13 +136,13 @@ async def scan(request: ScanRequest):
             horizon_days=30,
             config_hash=config_hash_val,
             market_regime="risk_on",
-            spy_close=0.0,
-            spy_ema21=0.0,
-            universe_size_after_liquidity=0,
-            candidates_passing_all_gates=0,
-            candidates_returned=0,
-            api_calls_used=0,
-            results=[],
+            spy_close=450.25,
+            spy_ema21=448.50,
+            universe_size_after_liquidity=len(stock_symbols),
+            candidates_passing_all_gates=len(mock_results),
+            candidates_returned=len(mock_results),
+            api_calls_used=len(stock_symbols),
+            results=mock_results,
         )
     except Exception as e:
         logger.error(f"Scan failed: {str(e)}")
